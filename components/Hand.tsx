@@ -8,14 +8,12 @@ export default function Hand({
   tiles: TileType[];
   size?: "sm" | "md" | "lg";
 }) {
-  // 1列で表示。横幅に収まらない場合は横スクロール（収まる場合は中央寄せ）。
+  // 牌は折り返して常に全牌を表示する（狭い画面でも見切れさせない）。
   return (
-    <div className="overflow-x-auto">
-      <div className="mx-auto flex w-max gap-0.5 px-1 sm:gap-1">
-        {tiles.map((t, i) => (
-          <Tile key={`${t}-${i}`} t={t} size={size} />
-        ))}
-      </div>
+    <div className="flex flex-wrap justify-center gap-0.5 px-1 sm:gap-1">
+      {tiles.map((t, i) => (
+        <Tile key={`${t}-${i}`} t={t} size={size} />
+      ))}
     </div>
   );
 }

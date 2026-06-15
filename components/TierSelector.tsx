@@ -12,15 +12,15 @@ export default function TierSelector({
   onChange: (t: Tier) => void;
 }) {
   return (
-    <div className="inline-flex rounded-full border border-emerald-200 bg-white p-1 shadow-sm">
+    <div className="inline-flex rounded-full border border-indigo-200 bg-white p-1">
       {TIERS.map((t) => (
         <button
           key={t}
           onClick={() => onChange(t)}
-          className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
+          className={`rounded-full px-4 py-2.5 text-sm font-medium transition ${
             value === t
-              ? "bg-emerald-600 text-white"
-              : "text-stone-600 hover:bg-emerald-50"
+              ? "bg-indigo-600 text-white"
+              : "text-slate-600 hover:bg-indigo-50"
           }`}
         >
           {TIER_LABEL[t]}

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { IconChevronLeft } from "@tabler/icons-react";
 import { Tier } from "@/lib/yaku";
 import { makeRecognitionQuestion, RecognitionQuestion } from "@/lib/handGenerator";
 import TierSelector from "@/components/TierSelector";
@@ -44,29 +45,29 @@ export default function RecognitionPage() {
   }
 
   return (
-    <main className="mx-auto max-w-xl px-4 py-8">
-      <div className="mb-4 flex items-center justify-between">
-        <Link href="/" className="text-sm text-emerald-700 hover:underline">
-          ← ホーム
+    <main className="mx-auto w-full max-w-xl px-4 py-8 sm:px-6 lg:max-w-2xl lg:py-12">
+      <div className="mb-4 grid grid-cols-[1fr_auto_1fr] items-center">
+        <Link
+          href="/"
+          aria-label="ホームへ戻る"
+          className="-m-2 inline-flex w-fit items-center p-2 text-indigo-700 hover:text-indigo-800"
+        >
+          <IconChevronLeft size={22} stroke={2} aria-hidden />
         </Link>
-        <h1 className="text-lg font-bold text-stone-800">手牌認識クイズ</h1>
-        <span className="w-12" />
+        <h1 className="text-lg font-bold text-slate-800">手牌認識クイズ</h1>
       </div>
 
-      <div className="mb-5 flex items-center justify-between">
+      <div className="mb-5">
         <TierSelector value={tier} onChange={setTier} />
-        <span className="text-sm text-stone-500">
-          {Math.min(qIndex + 1, TOTAL)} / {TOTAL}
-        </span>
       </div>
 
       {done ? (
-        <div className="rounded-2xl border border-emerald-200 bg-white p-8 text-center shadow-md">
-          <p className="text-sm text-stone-500">結果</p>
-          <p className="my-3 text-4xl font-bold text-emerald-700">
-            {score} <span className="text-2xl text-stone-400">/ {TOTAL}</span>
+        <div className="rounded-2xl border border-indigo-200 bg-white p-8 text-center">
+          <p className="text-sm text-slate-500">結果</p>
+          <p className="my-3 text-4xl font-bold text-indigo-700">
+            {score} <span className="text-2xl text-slate-500">/ {TOTAL}</span>
           </p>
-          <p className="mb-6 text-sm text-stone-600">
+          <p className="mb-6 text-sm text-slate-600">
             {score === TOTAL
               ? "満点！手牌を見る目が育っています。"
               : score >= 7
@@ -75,18 +76,18 @@ export default function RecognitionPage() {
           </p>
           <button
             onClick={() => startSession(tier)}
-            className="rounded-lg bg-emerald-600 px-6 py-2.5 text-white shadow-sm hover:bg-emerald-700"
+            className="rounded-lg bg-indigo-600 px-6 py-2.5 text-white hover:bg-indigo-700"
           >
             もう一度
           </button>
         </div>
       ) : (
         q && (
-          <div className="rounded-2xl border border-emerald-200 bg-white p-5 shadow-md">
-            <div className="mb-3 text-xs font-medium text-emerald-600">
+          <div className="rounded-2xl border border-indigo-200 bg-white p-5">
+            <div className="mb-3 text-xs font-medium text-indigo-700">
               この手牌で成立している役は？
             </div>
-            <div className="mb-5 rounded-xl bg-emerald-900/5 p-3">
+            <div className="mb-5 rounded-xl bg-slate-100 p-3">
               <Hand tiles={q.tiles} size="sm" />
             </div>
 
@@ -94,19 +95,29 @@ export default function RecognitionPage() {
               {q.choices.map((c) => {
                 const isAnswer = c.id === q.answerId;
                 const isPicked = c.id === picked;
-                let cls = "border-stone-200 bg-white hover:bg-emerald-50";
+                let cls = "border-slate-200 bg-white hover:border-indigo-300 hover:bg-indigo-50";
+                let mark: string | null = null;
                 if (picked) {
-                  if (isAnswer) cls = "border-emerald-500 bg-emerald-50";
-                  else if (isPicked) cls = "border-rose-400 bg-rose-50";
-                  else cls = "border-stone-200 bg-white opacity-60";
+                  if (isAnswer) {
+                    cls = "border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-inset ring-emerald-600";
+                    mark = "○";
+                  } else if (isPicked) {
+                    cls = "border-rose-500 bg-rose-50 text-rose-800 ring-1 ring-inset ring-rose-500";
+                    mark = "✕";
+                  } else {
+                    cls = "border-slate-200 bg-white text-slate-400";
+                  }
                 }
                 return (
                   <button
                     key={c.id}
                     onClick={() => answer(c.id)}
                     disabled={!!picked}
-                    className={`rounded-xl border px-3 py-3 text-center text-sm font-medium transition ${cls}`}
+                    className={`flex items-center justify-center gap-1.5 rounded-xl border px-3 py-3 text-center text-sm font-medium transition ${cls}`}
                   >
+                    {mark && (
+                      <span className="shrink-0 text-base font-bold leading-none">{mark}</span>
+                    )}
                     {c.name}
                   </button>
                 );
@@ -116,19 +127,22 @@ export default function RecognitionPage() {
             {picked && (
               <div className="mt-5">
                 <p
-                  className={`text-sm font-bold ${
+                  className={`flex items-center gap-1.5 text-sm font-bold ${
                     picked === q.answerId ? "text-emerald-700" : "text-rose-600"
                   }`}
                 >
+                  <span className="text-base leading-none">
+                    {picked === q.answerId ? "○" : "✕"}
+                  </span>
                   {picked === q.answerId ? "正解！" : "不正解…"}
                 </p>
-                <p className="mt-1 text-sm text-stone-600">
+                <p className="mt-1 text-sm text-slate-600">
                   <span className="font-bold">{q.yaku.name}</span>（{q.yaku.yomi}）:{" "}
                   {q.yaku.condition}
                 </p>
                 <button
                   onClick={next}
-                  className="mt-4 w-full rounded-lg bg-emerald-600 py-2.5 text-white shadow-sm hover:bg-emerald-700"
+                  className="mt-4 w-full rounded-lg bg-indigo-600 py-2.5 text-white hover:bg-indigo-700"
                 >
                   {qIndex + 1 >= TOTAL ? "結果を見る" : "次の問題へ"}
                 </button>
@@ -136,6 +150,12 @@ export default function RecognitionPage() {
             )}
           </div>
         )
+      )}
+
+      {!done && q && (
+        <p className="mt-5 text-center text-sm text-slate-500">
+          {Math.min(qIndex + 1, TOTAL)} / {TOTAL}
+        </p>
       )}
     </main>
   );

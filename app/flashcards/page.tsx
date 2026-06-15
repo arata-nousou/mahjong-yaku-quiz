@@ -2,6 +2,11 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconArrowsShuffle,
+} from "@tabler/icons-react";
 import { Tier, yakuByTier } from "@/lib/yaku";
 import { shuffle } from "@/lib/tiles";
 import YakuCard from "@/components/YakuCard";
@@ -32,21 +37,25 @@ export default function FlashcardsPage() {
   const next = () => setIndex((i) => (i + 1) % cards.length);
 
   return (
-    <main className="mx-auto max-w-xl px-4 py-8">
-      <div className="mb-4 flex items-center justify-between">
-        <Link href="/" className="text-sm text-emerald-700 hover:underline">
-          ← ホーム
+    <main className="mx-auto w-full max-w-xl px-4 py-8 sm:px-6 lg:max-w-2xl lg:py-12">
+      <div className="mb-4 grid grid-cols-[1fr_auto_1fr] items-center">
+        <Link
+          href="/"
+          aria-label="ホームへ戻る"
+          className="-m-2 inline-flex w-fit items-center p-2 text-indigo-700 hover:text-indigo-800"
+        >
+          <IconChevronLeft size={22} stroke={2} aria-hidden />
         </Link>
-        <h1 className="text-lg font-bold text-stone-800">暗記カード</h1>
-        <span className="w-12" />
+        <h1 className="text-lg font-bold text-slate-800">暗記カード</h1>
       </div>
 
       <div className="mb-4 flex items-center justify-between">
         <TierSelector value={tier} onChange={changeTier} />
         <button
           onClick={doShuffle}
-          className="rounded-full border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-600 hover:bg-stone-50"
+          className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50"
         >
+          <IconArrowsShuffle size={16} stroke={2} aria-hidden />
           シャッフル
         </button>
       </div>
@@ -56,18 +65,20 @@ export default function FlashcardsPage() {
       <div className="mt-5 flex items-center justify-between">
         <button
           onClick={prev}
-          className="rounded-lg bg-emerald-600 px-5 py-2 text-white shadow-sm hover:bg-emerald-700"
+          aria-label="前のカード"
+          className="flex items-center justify-center rounded-lg bg-indigo-600 px-6 py-3 text-white hover:bg-indigo-700"
         >
-          前へ
+          <IconChevronLeft size={22} stroke={2.25} aria-hidden />
         </button>
-        <span className="text-sm text-stone-500">
+        <span className="text-sm text-slate-500">
           {index + 1} / {cards.length}
         </span>
         <button
           onClick={next}
-          className="rounded-lg bg-emerald-600 px-5 py-2 text-white shadow-sm hover:bg-emerald-700"
+          aria-label="次のカード"
+          className="flex items-center justify-center rounded-lg bg-indigo-600 px-6 py-3 text-white hover:bg-indigo-700"
         >
-          次へ
+          <IconChevronRight size={22} stroke={2.25} aria-hidden />
         </button>
       </div>
     </main>

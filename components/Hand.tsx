@@ -8,12 +8,15 @@ export default function Hand({
   tiles: TileType[];
   size?: "sm" | "md" | "lg";
 }) {
-  // 牌は折り返して常に全牌を表示する（狭い画面でも見切れさせない）。
+  // 牌は常に一列。狭い画面では折り返さず横スクロールさせる（麻雀牌が二列になるのは不自然なため）。
+  // 収まる時は mx-auto で中央寄せ、溢れた時は左端から横スクロール可能。
   return (
-    <div className="flex flex-wrap justify-center gap-0.5 px-1 sm:gap-1">
-      {tiles.map((t, i) => (
-        <Tile key={`${t}-${i}`} t={t} size={size} />
-      ))}
+    <div className="overflow-x-auto px-1">
+      <div className="mx-auto flex w-max gap-0.5 sm:gap-1">
+        {tiles.map((t, i) => (
+          <Tile key={`${t}-${i}`} t={t} size={size} />
+        ))}
+      </div>
     </div>
   );
 }

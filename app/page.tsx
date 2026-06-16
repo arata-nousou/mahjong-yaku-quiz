@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IconBook2, IconPencil, IconCards } from "@tabler/icons-react";
+import { IconBook2, IconPencil, IconCards, IconMap } from "@tabler/icons-react";
 import { Logo } from "@/components/Logo";
 
 const MODES = [
@@ -20,6 +20,12 @@ const MODES = [
     Icon: IconCards,
     title: "手牌認識クイズ",
     desc: "手牌を見て成立している役を当てる。実戦に一番近い練習。",
+  },
+  {
+    href: "/roadmap",
+    Icon: IconMap,
+    title: "段位別ロードマップ",
+    desc: "段位ごとに「次にやること」を確認する。初心→雀傑まで対応。",
   },
 ];
 

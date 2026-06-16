@@ -19,7 +19,7 @@ export default function Tile({
       alt={tileLabel(t)}
       title={tileLabel(t)}
       draggable={false}
-      className={`${SIZE[size]} aspect-[3/4] select-none rounded-sm border border-slate-300 bg-white shadow-sm`}
+      className={`${SIZE[size]} aspect-[3/4] shrink-0 select-none rounded-sm border border-slate-300 bg-white shadow-sm`}
     />
   );
 }
